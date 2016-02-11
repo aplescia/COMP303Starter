@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class Inventory
 {
 	private final String aName; // Unique
+	private int aTotalItems;
 	private final HashMap<Item, Integer> aInventory = new HashMap<>();
 	
 	/**
@@ -42,6 +43,7 @@ public class Inventory
 			amount = aInventory.get(pItem);
 		}
 		amount += pQuantity;
+		aTotalItems += pQuantity;
 		aInventory.put(pItem, amount);
 	}
 	
@@ -55,6 +57,7 @@ public class Inventory
 	 */
 	public void dispose(Item pItem, int pQuantity)
 	{
+		assert pItem != null;
 		int amount = aInventory.get(pItem);
 		amount -= pQuantity;
 		aInventory.put(pItem, amount);
@@ -74,5 +77,10 @@ public class Inventory
 		{
 			return 0;
 		}
+	}
+	
+	public int totalValue()
+	{
+		return aTotalItems;
 	}
 }
