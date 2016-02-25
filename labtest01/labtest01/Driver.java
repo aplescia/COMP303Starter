@@ -1,8 +1,12 @@
 package labtest01;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.junit.Test;
 
 /**
  * Utility class with a driver program and some 
@@ -49,7 +53,6 @@ public final class Driver
 			lInventory.stock(item, 1);
 		}
 		//lInventory.dispose(null, 0);
-		System.out.println(lInventory.totalValue());
-		
+		System.out.println(lInventory.totalValue());		
 	}
 }
