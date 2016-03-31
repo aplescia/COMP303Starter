@@ -1,16 +1,23 @@
 package labtest01;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Represents the inventory of a 
  * physical grocery store.
  */
-public class Inventory
+public class Inventory extends Observable
 {
 	private final String aName; // Unique
+	private List<Observer> aObservers;
 	private int aTotalItems;
 	private final HashMap<Item, Integer> aInventory = new HashMap<>();
+	private Item aLastItem;
+	private boolean aAdded;
 	
 	/**
 	 * Creates a new inventory with no items in it,
@@ -19,7 +26,9 @@ public class Inventory
 	 */
 	public Inventory(String pName)
 	{
+		super();
 		aName = pName;
+		aObservers = new ArrayList<>();
 	}
 	
 	/**
@@ -29,6 +38,38 @@ public class Inventory
 	{
 		return aName;
 	}
+	
+	public boolean addedOrRemoved()
+	{
+		return this.aAdded;
+	}
+	
+//	@Override
+//	public void addObserver(Observer pObserver)
+//	{
+//		if (!this.aObservers.contains(pObserver))
+//			this.aObservers.add(pObserver);
+//		super.addObserver(pObserver);
+//	}
+	
+//	@Override
+//	public void notifyObservers(Object arg)
+//	{
+//		if (arg == null){
+//			for (Observer a : this.aObservers)
+//			{
+//				if (a.getClass() == DisposeObserver.class)
+//					a.update(this, null);
+//			}
+//		}else{
+//			for (Observer a : this.aObservers)
+//			{
+//				if (a.getClass() == StockObserver.class)
+//					a.update(this, null);
+//			}
+//			
+//		}
+//	}
 	
 	/**
 	 * Adds pQuantity number of items to the inventory.
@@ -45,6 +86,17 @@ public class Inventory
 		amount += pQuantity;
 		aTotalItems += pQuantity;
 		aInventory.put(pItem, amount);
+		this.aLastItem = pItem;
+		this.aAdded = true;
+		setChanged();
+		notifyObservers();
+		clearChanged();
+
+	}
+	
+	public Item getLastItem()
+	{
+		return this.aLastItem;
 	}
 	
 	/**
@@ -61,6 +113,11 @@ public class Inventory
 		int amount = aInventory.get(pItem);
 		amount -= pQuantity;
 		aInventory.put(pItem, amount);
+		aTotalItems -= pQuantity;
+		this.aAdded = false;
+		setChanged();
+		notifyObservers();
+		clearChanged();
 	}
 	
 	/**

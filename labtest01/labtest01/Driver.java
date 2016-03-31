@@ -28,31 +28,46 @@ public final class Driver
 	public static void main(String[] pArgs)
 	{
 		
-		List<Item> sortList = new ArrayList<>();
+//		List<Item> sortList = new ArrayList<>();
+//		
+//		for( Item item : ITEMS )
+//		{
+//			System.out.println(item.getName());
+//			sortList.add(item);
+//		}
+//		
+//		Collections.sort(sortList, new ItemComparator());
+//		System.out.println("--------");
+//		
+//		for (Item item : sortList)
+//		{
+//			System.out.println(item.getName());
+//		}
+//		
+//		System.out.println("-------");
+//				
+//		
+//		Inventory lInventory = new Inventory("Test Inventory");
+//		for (Item item : ITEMS)
+//		{
+//			lInventory.stock(item, 1);
+//		}
+//		//lInventory.dispose(null, 0);
+//		System.out.println(lInventory.totalValue());	
 		
-		for( Item item : ITEMS )
-		{
-			System.out.println(item.getName());
-			sortList.add(item);
-		}
 		
-		Collections.sort(sortList, new ItemComparator());
-		System.out.println("--------");
+		Inventory lInventory = new Inventory("Test");
+		StockObserver stockObserver = new StockObserver(lInventory);
+		DisposeObserver disposeObserver = new DisposeObserver(lInventory);
+		lInventory.addObserver(stockObserver);
+		lInventory.addObserver(disposeObserver);
+		Item theItem = new Item("bob", 1, 10);
 		
-		for (Item item : sortList)
-		{
-			System.out.println(item.getName());
-		}
+		lInventory.stock(theItem, 3);
+		lInventory.dispose(theItem, 1);
+		lInventory.stock(theItem, 20);
+		lInventory.dispose(theItem, 4);
 		
-		System.out.println("-------");
-				
 		
-		Inventory lInventory = new Inventory("Test Inventory");
-		for (Item item : ITEMS)
-		{
-			lInventory.stock(item, 1);
-		}
-		//lInventory.dispose(null, 0);
-		System.out.println(lInventory.totalValue());		
 	}
 }
